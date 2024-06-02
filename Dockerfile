@@ -1,24 +1,21 @@
-# Usar uma imagem base oficial do Python
+# Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
-# Definir o diretório de trabalho dentro do container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copiar os arquivos de requisitos para o diretório de trabalho
-COPY requirements.txt .
-
-# Instalar as dependências
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copiar o restante da aplicação para o diretório de trabalho
+# Copy the current directory contents into the container at /app
 COPY . .
 
-# Expor a porta que a aplicação vai rodar
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install additional packages that may be required
+RUN apt-get update && apt-get install -y libffi-dev gcc
+
+# Make port 5000 available to the world outside this container
 EXPOSE 5000
 
-# Inicializar o banco de dados
-RUN python -c 'from app.model import init_db; init_db()'
-
-# Comando para rodar a aplicação
-CMD ["python", "run.py"]
+# CMD to initialize the SQLite database and run the Flask app
+CMD ["python", "app/__init__.py"]
 

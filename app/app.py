@@ -1,25 +1,21 @@
-<!-- app/templates/ask.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask a Question</title>
-</head>
-<body>
-    <h1>Ask a Question</h1>
-    <form method="POST">
-        <label for="question">Question:</label><br>
-        <textarea id="question" name="question" rows="4" cols="50"></textarea><br><br>
-        <input type="submit" value="Submit">
-    </form>
+# app.py
 
-    {% if question %}
-    <h2>Question:</h2>
-    <p>{{ question }}</p>
-    <h2>Answer:</h2>
-    <p>{{ answer }}</p>
-    {% endif %}
-</body>
-</html>
+import os
+from flask import Flask
+from app.ask import ask_blueprint
+from app.train import train_blueprint
+
+app = Flask(__name__, template_folder='app/templates')
+app.secret_key = os.urandom(24)  # Chave secreta para a sessão
+
+# Registrar blueprints
+app.register_blueprint(ask_blueprint, url_prefix='/ask')
+app.register_blueprint(train_blueprint, url_prefix='/train')
+
+# Inicialização do banco de dados (se necessário)
+from app import model
+model.init_db()
+
+if __name__ == "__main__":
+    app.run(debug=True)
 

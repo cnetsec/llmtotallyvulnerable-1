@@ -24,17 +24,22 @@ def add_training_example(question, answer, context):
     conn.commit()
     conn.close()
 
+# model.py
+
+
 class GPT2Generator:
     def __init__(self):
         self.model_name = 'gpt2'
         self.tokenizer = GPT2Tokenizer.from_pretrained(self.model_name)
         self.model = GPT2LMHeadModel.from_pretrained(self.model_name)
-        self.tokenizer.pad_token = self.tokenizer.eos_token
+        # Ajustar o token de padding para ser o mesmo que o token EOS, convertendo para string
+        self.tokenizer.pad_token = str(self.tokenizer.eos_token)
 
-    def generate_response(self, question, context):
-        input_text = f"Question: {question}\nContext: {context}"
+    def generate_response(self, question, context=None):
+        input_text = f"Question: {question}\nContext: {context}" if context else f"Question: {question}"
         input_ids = self.tokenizer.encode(input_text, return_tensors='pt')
-        output = self.model.generate(input_ids, max_length=100, pad_token_id=self.tokenizer.eos_token)
+        output = self.model.generate(input_ids, max_length=100, pad_token_id=self.tokenizer.eos_token_id)
         response = self.tokenizer.decode(output[0], skip_special_tokens=True)
-        return response
+        return str(response)
+
 
