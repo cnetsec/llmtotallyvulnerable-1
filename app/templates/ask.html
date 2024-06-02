@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Ask a Question{% endblock %}
+
+{% block content %}
+<h1>Ask a Question</h1>
+<form action="{{ url_for('ask.ask_question') }}" method="POST">
+    <label for="question">Question:</label>
+    <input type="text" id="question" name="question" required>
+    <button type="submit">Submit</button>
+</form>
+{% if question %}
+<h2>Question: {{ question }}</h2>
+<h2>Answer: {{ answer }}</h2>
+{% endif %}
+{% endblock %}
+
