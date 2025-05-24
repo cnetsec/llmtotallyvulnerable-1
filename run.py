@@ -1,19 +1,16 @@
-from flask import Flask
-from app.ask import ask_blueprint
-from app.train import train_blueprint
-from app.model import init_db
+from dotenv import load_dotenv
+import os
+from app import app
 
-app = Flask(__name__, template_folder='app/templates')
-app.secret_key = 'your_secret_key'
+# Carregar variáveis de ambiente do arquivo .env
+load_dotenv()
 
-# Registrar blueprints
-app.register_blueprint(ask_blueprint, url_prefix='/ask')
-app.register_blueprint(train_blueprint, url_prefix='/train')
-
-# Inicializar o banco de dados
-with app.app_context():
-    init_db()
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+if __name__ == "__main__":
+    # Obter o host e a porta de variáveis de ambiente, com fallback para valores padrão
+    host = os.getenv('FLASK_RUN_HOST', '127.0.0.1')
+    port = int(os.getenv('FLASK_RUN_PORT', 5000))
+    
+    # Obter o modo de debug da variável de ambiente
+    debug = os.getenv('FLASK_ENV', 'development') == 'development'
+    
+    app.run(debug=debug, host=host, port=port)
