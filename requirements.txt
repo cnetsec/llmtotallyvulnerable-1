@@ -1,6 +1,4 @@
-Flask==2.0.2
-transformers==4.17.0
-torch
-Werkzeug==2.0.2
-
-
+Flask==2.0.2  # LLM 003 - Flask com `debug=True` em produção. Não mantenha o modo de debug ativo em produção.
+transformers==4.17.0  # LLM 004 - Proteção de Tokens. Certifique-se de que os tokens e credenciais do modelo não estejam expostos no código.
+torch  # LLM 009 - Proteção Contra Injeções. Garantir que o código esteja seguro e não use entradas inseguras ou sem validação.
+Werkzeug==2.0.2  # LLM 007 - Proteção Contra XSS. Verifique se a aplicação não expõe dados sem escapar ou validar entradas.
