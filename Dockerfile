@@ -1,4 +1,4 @@
-# Definir a imagem base
+# Usando uma imagem base de Python
 FROM python:3.9-slim
 
 # Definir o diretório de trabalho dentro do container
@@ -13,7 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Expor a porta 5000
 EXPOSE 5000
 
-# Comando para rodar a aplicação (ajuste conforme necessário para o seu projeto)
-CMD ["python", "app.py"]
-
-# Ou o comando equivalente para o seu projeto, dependendo da configuração
+# Comando para rodar a aplicação, usando o script run.py para iniciar o servidor
+CMD ["python", "run.py"]
